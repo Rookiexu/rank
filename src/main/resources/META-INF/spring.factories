@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.rookiex.rank.RankApplication
+cn.rookiex.rank.RankAutoConfig
