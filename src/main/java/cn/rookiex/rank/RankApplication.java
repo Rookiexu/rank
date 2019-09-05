@@ -19,10 +19,4 @@ public class RankApplication {
     public static void main(String[] args) {
         SpringApplication.run(RankApplication.class, args);
     }
-
-
-    @Bean
-    StringRedisTemplate redisTemplate(RedisConnectionFactory connectionFactory) {
-        return new StringRedisTemplate(connectionFactory);
-    }
 }
