@@ -5,7 +5,6 @@ import cn.rookiex.rank.exception.RedisInitFailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundZSetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -68,9 +67,18 @@ public class RankServiceImpl implements RankService {
      * @param rankName 指定排行的value
      * @return 获取的排行榜数据
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
-    public RankData getRankDataByRank(int rank, String rankName) throws RedisInitFailException {
-        return null;
+    public String getRankDataByRank(int rank, String rankName) throws RedisInitFailException {
+        if (redisTemplate == null) {
+            throw new RedisInitFailException();
+        }
+        BoundZSetOperations<String, String> zSetOperations = redisTemplate.boundZSetOps(rankName);
+        Set<String> strings = zSetOperations.range(rank, rank);
+        if (strings == null) {
+            return null;
+        }
+        return strings.size() > 0 ? strings.iterator().next() : null;
     }
 
     /**
@@ -80,9 +88,18 @@ public class RankServiceImpl implements RankService {
      * @param rankName 指定排行的value
      * @return 获取的排行榜数据
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
-    public RankData getRankDataByValue(int value, String rankName) throws RedisInitFailException {
-        return null;
+    public String getRankDataByValue(int value, String rankName) throws RedisInitFailException {
+        if (redisTemplate == null) {
+            throw new RedisInitFailException();
+        }
+        BoundZSetOperations<String, String> zSetOperations = redisTemplate.boundZSetOps(rankName);
+        Set<String> strings = zSetOperations.rangeByScore(value, value);
+        if (strings == null) {
+            return null;
+        }
+        return strings.size() > 0 ? strings.iterator().next() : null;
     }
 
     /**
@@ -93,7 +110,12 @@ public class RankServiceImpl implements RankService {
      */
     @Override
     public boolean deleteRankData(RankData rankData) throws RedisInitFailException {
-        return false;
+        if (redisTemplate == null) {
+            throw new RedisInitFailException();
+        }
+        BoundZSetOperations<String, String> zSetOperations = redisTemplate.boundZSetOps(rankData.getRankName());
+        Long remove = zSetOperations.remove(rankData.getUserName());
+        return remove != null && remove > 0;
     }
 
     /**
@@ -124,11 +146,43 @@ public class RankServiceImpl implements RankService {
         if (redisTemplate == null) {
             throw new RedisInitFailException();
         }
-//        BoundZSetOperations<String, String> zSetOperations = redisTemplate.boundZSetOps(rankData.getRankName());
         for (RankData rankData : initDataList) {
             updateInsertRank(rankData);
         }
         return true;
+    }
+
+    /**
+     * 初始化排行榜数据
+     *
+     * @param rankName    排行榜名字
+     * @param elementName 初始化数据
+     * @return result
+     * @throws RedisInitFailException redis not init
+     */
+    @Override
+    public Long getRankByUserName(String rankName, String elementName) throws RedisInitFailException {
+        if (redisTemplate == null) {
+            throw new RedisInitFailException();
+        }
+        BoundZSetOperations<String, String> zSetOperations = redisTemplate.boundZSetOps(rankName);
+        return zSetOperations.rank(elementName);
+    }
+
+    /**
+     * 初始化排行榜数据
+     *
+     * @param rankName 排行榜名字
+     * @return result
+     * @throws RedisInitFailException redis not init
+     */
+    @Override
+    public Long getRankSize(String rankName) throws RedisInitFailException {
+        if (redisTemplate == null) {
+            throw new RedisInitFailException();
+        }
+        BoundZSetOperations<String, String> zSetOperations = redisTemplate.boundZSetOps(rankName);
+        return zSetOperations.zCard();
     }
 
 }
