@@ -2,7 +2,6 @@ package cn.rookiex.rank.service;
 
 import cn.rookiex.rank.data.RankData;
 import cn.rookiex.rank.exception.RedisInitFailException;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
