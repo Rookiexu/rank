@@ -6,44 +6,25 @@ package cn.rookiex.rank.data;
  * @Describe :
  * @version: 1.0
  */
-public class RankData {
+public interface RankData {
+    /**
+     * 生成排行榜名称
+     *
+     * @return 排行榜名称
+     */
+    String buildRankName();
 
     /**
-     * 排行榜名称
+     * 生成用于用于比较排名的排行榜积分
+     *
+     * @return 比较分
      */
-    private String rankName;
+    double buildRankScore();
 
     /**
-     * 用来排名的数值
+     * 生成排行榜数据对象对应的id
+     *
+     * @return dataId
      */
-    private double value;
-
-    /**
-     * 用户id
-     */
-    private String userName;
-
-    public String getRankName() {
-        return rankName;
-    }
-
-    public void setRankName(String rankName) {
-        this.rankName = rankName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
-    }
+    String buildRankDataId();
 }
