@@ -37,6 +37,17 @@ public interface RankService {
     /**
      * 获得排行榜数据
      *
+     * @param lowRank  最低排名(包含)
+     * @param highRank 最高排名(包含)
+     * @param rankName 排行数据
+     * @return 获取的排行榜数据 key = elementName
+     * @throws RedisInitFailException redis not init
+     */
+    Set<String> getReverseRankData(int lowRank, int highRank, String rankName) throws RedisInitFailException;
+
+    /**
+     * 获得排行榜数据
+     *
      * @param rank     指定排行的数据
      * @param rankName 指定排行的value
      * @return elementName
@@ -47,12 +58,32 @@ public interface RankService {
     /**
      * 获得排行榜数据
      *
+     * @param rank     指定排行的数据
+     * @param rankName 指定排行的value
+     * @return elementName
+     * @throws RedisInitFailException redis not init
+     */
+    String getReverseRankDataByRank(int rank, String rankName) throws RedisInitFailException;
+
+    /**
+     * 获得排行榜数据
+     *
      * @param value    指定排行的value
      * @param rankName 指定排行的value
      * @return elementName
      * @throws RedisInitFailException redis not init
      */
     String getRankDataByValue(int value, String rankName) throws RedisInitFailException;
+
+    /**
+     * 获得排行榜数据
+     *
+     * @param value    指定排行的value
+     * @param rankName 指定排行的value
+     * @return elementName
+     * @throws RedisInitFailException redis not init
+     */
+    String getReverseRankDataByValue(int value, String rankName) throws RedisInitFailException;
 
     /**
      * 清除指定排行榜数据
@@ -91,6 +122,16 @@ public interface RankService {
      * @throws RedisInitFailException redis not init
      */
     Long getRankByUserName(String rankName, String elementName) throws RedisInitFailException;
+
+    /**
+     * 初始化排行榜数据
+     *
+     * @param rankName     排行榜名字
+     * @param elementName 初始化数据
+     * @return result
+     * @throws RedisInitFailException redis not init
+     */
+    Long getReverseRankByUserName(String rankName, String elementName) throws RedisInitFailException;
 
     /**
      * 初始化排行榜数据
