@@ -10,7 +10,7 @@
     </parent>
     <groupId>cn.rookiex</groupId>
     <artifactId>rank</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3</version>
     <name>rank</name>
     <description>rank project</description>
 
@@ -46,5 +46,16 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>rdc-releases</id>
+            <url>https://repo.rdc.aliyun.com/repository/104519-release-Hv27GU/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rdc-snapshots</id>
+            <url>https://repo.rdc.aliyun.com/repository/104519-snapshot-t68zhu/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
